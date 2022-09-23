@@ -12,7 +12,6 @@ import platform.utils.riot.api.endpoints.summoner.dto.Summoner;
 import platform.utils.riot.constant.Platform;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RiotApiServiceImpl implements RiotApiService {
@@ -37,12 +36,7 @@ public class RiotApiServiceImpl implements RiotApiService {
 
     @Override
     public String getApiKey() {
-        Optional<ApiKey> apiKey = apiKeyRepository.findById(1L);
-        if (apiKey.isPresent()) {
-            return apiKey.get().getValue();
-        } else {
-            throw new RuntimeException("ApiKey not found");
-        }
+        return apiKeyRepository.findById(1L).map(ApiKey::getValue).orElse("");
     }
 
     @SneakyThrows

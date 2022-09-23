@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
-@EnableMongoRepositories(basePackages = {"platform.repositories"})
+@EnableMongoRepositories
 @SpringBootApplication
 public class ApplicationSpringBoot {
 
