@@ -1,7 +1,9 @@
 package platform.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 import platform.entities.ApiKey;
 
-public interface ApiKeyRepository extends JpaRepository<ApiKey, Long> {
+@Repository
+public interface ApiKeyRepository extends MongoRepository<ApiKey, Long> {
 }

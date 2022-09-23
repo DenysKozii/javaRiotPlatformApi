@@ -1,14 +1,17 @@
 package platform.entities;
 
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.persistence.*;
 
 @Entity
-@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @AllArgsConstructor
-@Data
-@EqualsAndHashCode(callSuper = true)
-@Table(name = "users")
+@Document("users")
 public class User extends BaseEntity {
 
     @Id

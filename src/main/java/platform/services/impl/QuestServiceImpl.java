@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import platform.dtos.QuestDto;
 import platform.mappers.QuestMapper;
 import platform.repositories.QuestRepository;
-import platform.services.RiotApiService;
 import platform.services.QuestService;
+import platform.services.RiotApiService;
 
 import java.util.List;
 import java.util.stream.Collectors;

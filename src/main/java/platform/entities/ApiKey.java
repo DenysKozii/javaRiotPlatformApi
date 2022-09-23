@@ -1,15 +1,18 @@
 package platform.entities;
 
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 
 @Entity
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "api_keys")
+@Document("api_keys")
 public class ApiKey extends BaseEntity {
 
     @Id

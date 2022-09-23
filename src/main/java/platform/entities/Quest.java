@@ -1,16 +1,18 @@
 package platform.entities;
 
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 import platform.enums.QuestType;
 
 import javax.persistence.*;
 
 @Entity
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "quests")
+@Document("quests")
 public class Quest extends BaseEntity {
 
     @Id

@@ -1,8 +1,9 @@
 package platform.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import platform.entities.ApiKey;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 import platform.entities.Quest;
 
-public interface QuestRepository extends JpaRepository<Quest, Long> {
+@Repository
+public interface QuestRepository extends MongoRepository<Quest, Long> {
 }
