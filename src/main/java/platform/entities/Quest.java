@@ -1,7 +1,9 @@
 package platform.entities;
 
 import lombok.*;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import platform.enums.QuestType;
 
@@ -14,9 +16,15 @@ import platform.enums.QuestType;
 public class Quest {
 
     @Id
-    private Long id;
+    private String id;
 
-    private Integer value;
+    private String title;
+
+    private Integer price;
+
+    private Integer profit;
+
+    private Integer trigger;
 
     private QuestType type;
 

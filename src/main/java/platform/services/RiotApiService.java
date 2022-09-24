@@ -1,5 +1,6 @@
 package platform.services;
 
+import platform.utils.riot.api.endpoints.match.dto.Match;
 import platform.utils.riot.api.endpoints.summoner.dto.Summoner;
 import platform.utils.riot.constant.Platform;
 
@@ -14,5 +15,7 @@ public interface RiotApiService {
     Summoner getSummoner(Platform platform, String username);
 
     List<String> getMatchList(Platform platform, String username);
+
+    Match getMatch(Platform platform, String matchId);
 
 }

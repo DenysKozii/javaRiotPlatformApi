@@ -8,6 +8,7 @@ import platform.repositories.ApiKeyRepository;
 import platform.services.RiotApiService;
 import platform.utils.riot.api.ApiConfig;
 import platform.utils.riot.api.RiotApi;
+import platform.utils.riot.api.endpoints.match.dto.Match;
 import platform.utils.riot.api.endpoints.summoner.dto.Summoner;
 import platform.utils.riot.constant.Platform;
 
@@ -49,6 +50,12 @@ public class RiotApiServiceImpl implements RiotApiService {
     @Override
     public List<String> getMatchList(Platform platform, String username) {
         return api.getMatchListByAccountId(platform.convert(), getSummoner(platform, username).getPuuid());
+    }
+
+    @SneakyThrows
+    @Override
+    public Match getMatch(Platform platform, String matchId) {
+        return api.getMatch(platform, matchId);
     }
 
 }

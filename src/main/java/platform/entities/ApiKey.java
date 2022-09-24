@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Document("api_keys")
 public class ApiKey {
 
