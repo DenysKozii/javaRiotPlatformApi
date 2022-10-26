@@ -1,8 +1,10 @@
 package platform.services.impl;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
 import lombok.SneakyThrows;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import platform.entities.Game;
@@ -21,20 +23,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
 public class RiotApiServiceImpl implements RiotApiService {
 
-    @Value("${riot.api.key}")
-    private final String key = "RGAPI-d6756b99-0aa4-4f26-b4a2-f493276acb86";
-    private final ApiConfig config;
-    private final RiotApi api;
-    private final UserRepository userRepository;
+    String riotApiKey;
+    ApiConfig config;
+    RiotApi api;
+    UserRepository userRepository;
+
+    @Autowired
+    public RiotApiServiceImpl(@Value("${riot.api.key}") String riotApiKey,
+                              ApiConfig config,
+                              RiotApi api,
+                              UserRepository userRepository) {
+        this.config = config;
+        this.api = api;
+        this.userRepository = userRepository;
+        this.riotApiKey = riotApiKey;
+    }
 
     @SneakyThrows
     @Override
     public Summoner getSummoner(Platform platform, String name) {
-        config.setKey(key);
+        config.setKey(riotApiKey);
         return api.getSummonerByName(platform, name);
     }
 
@@ -89,7 +101,7 @@ public class RiotApiServiceImpl implements RiotApiService {
         }
     }
 
-    private List<Minute> getTimeline(Platform platform, String matchId, String puuid) throws RiotApiException {
+    List<Minute> getTimeline(Platform platform, String matchId, String puuid) throws RiotApiException {
         List<Minute> minutes = new ArrayList<>();
         platform = platform.convert();
         MatchTimelineInfo info = api.getTimelineByMatchId(platform, matchId).getInfo();
@@ -102,7 +114,7 @@ public class RiotApiServiceImpl implements RiotApiService {
             i++;
             MatchParticipantFrame matchParticipantFrame = matchFrame.getParticipantFrames().get(id);
             Minute minute = new Minute();
-            minute.setTime(i);
+            minute.setMinute(i);
             minute.setTotalGold(matchParticipantFrame.getTotalGold());
             minute.setCurrentGold(matchParticipantFrame.getCurrentGold());
             minute.setMinionsKilled(matchParticipantFrame.getMinionsKilled());

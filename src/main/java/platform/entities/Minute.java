@@ -6,9 +6,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import platform.utils.riot.api.endpoints.match.dto.MatchPosition;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @Setter
 @ToString
@@ -21,7 +18,7 @@ public class Minute {
     @Id
     String id;
 
-    Integer time;
+    Integer minute;
 
     Integer minionsKilled;
 
