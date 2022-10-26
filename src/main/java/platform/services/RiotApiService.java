@@ -1,6 +1,8 @@
 package platform.services;
 
-import platform.utils.riot.api.endpoints.match.dto.Match;
+import platform.entities.Minute;
+import platform.utils.riot.api.RiotApiException;
+import platform.utils.riot.api.endpoints.match.dto.Info;
 import platform.utils.riot.api.endpoints.summoner.dto.Summoner;
 import platform.utils.riot.constant.Platform;
 
@@ -12,8 +14,10 @@ public interface RiotApiService {
 
     List<String> getMatchList(Platform platform, Summoner summoner);
 
-    Match getMatch(Platform platform, String matchId);
+    Info getMatchInfo(Platform platform, String matchId);
 
     void update(Platform platform, String name);
+
+    List<Minute> getTimeline(Platform platform, String matchId, String puuid);
 
 }

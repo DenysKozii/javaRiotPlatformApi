@@ -9,6 +9,7 @@ import platform.utils.riot.api.endpoints.match.dto.MatchPosition;
 @Getter
 @Setter
 @ToString
+@Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -27,6 +28,12 @@ public class Minute {
     Integer totalGold;
 
     Integer currentGold;
+
+    Integer teamScore;
+
+    Integer level;
+
+    Integer xp;
 
     MatchPosition position;
 

@@ -2,6 +2,7 @@ package platform.entities;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import platform.utils.riot.constant.Platform;
@@ -25,7 +26,7 @@ public class User {
 
     Platform platform;
 
-    Integer lastUpdate = -1;
+    Long lastUpdate = -1L;
 
     List<Game> games = new ArrayList<>();
 

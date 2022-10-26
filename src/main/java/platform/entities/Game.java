@@ -11,6 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -20,6 +21,10 @@ public class Game {
 
     @Id
     String id;
+
+    String gameMode;
+
+    String gameType;
 
     String championName;
 

@@ -14,11 +14,11 @@ import platform.repositories.UserRepository;
 import platform.services.RiotApiService;
 import platform.utils.riot.api.ApiConfig;
 import platform.utils.riot.api.RiotApi;
-import platform.utils.riot.api.RiotApiException;
 import platform.utils.riot.api.endpoints.match.dto.*;
 import platform.utils.riot.api.endpoints.summoner.dto.Summoner;
 import platform.utils.riot.constant.Platform;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,8 +58,8 @@ public class RiotApiServiceImpl implements RiotApiService {
 
     @SneakyThrows
     @Override
-    public Match getMatch(Platform platform, String matchId) {
-        return api.getMatch(platform, matchId);
+    public Info getMatchInfo(Platform platform, String matchId) {
+        return api.getMatch(platform, matchId).getInfo();
     }
 
     private User getOrCreateUser(Platform platform, String name) {
@@ -68,6 +68,7 @@ public class RiotApiServiceImpl implements RiotApiService {
                     User user = new User();
                     user.setPlatform(platform);
                     user.setName(name);
+                    user.setLastUpdate(new Timestamp(System.currentTimeMillis()).getTime());
                     userRepository.save(user);
                     return user;
                 });
@@ -78,30 +79,35 @@ public class RiotApiServiceImpl implements RiotApiService {
     public void update(Platform platform, String name) {
         User user = getOrCreateUser(platform, name);
         Summoner summoner = getSummoner(platform, name);
+        log.info("Update information for {}", summoner);
         List<String> matches = getMatchList(platform, summoner);
-        System.out.println(matches);
         for (String id : matches) {
-            Info info = api.getMatch(platform.convert(), id).getInfo();
+            Info info = getMatchInfo(platform.convert(), id);
             List<Participant> participants = info.getParticipants();
-//            Timestamp ts = new Timestamp(info.getGameStartTimestamp());
-//            Date date = new Date(ts.getTime());
             for (Participant participant : participants) {
                 if (participant.getPuuid().equals(summoner.getPuuid())) {
                     List<Minute> minutes = getTimeline(platform, id, summoner.getPuuid());
-                    Game game = new Game();
-                    game.setChampionName(participant.getChampionName());
-                    game.setKills(participant.getKills());
-                    game.setDeaths(participant.getDeaths());
-                    game.setAssists(participant.getAssists());
+                    Game game = Game.builder()
+                            .gameType(info.getGameType())
+                            .gameMode(info.getGameMode())
+                            .championName(participant.getChampionName())
+                            .kills(participant.getKills())
+                            .deaths(participant.getDeaths())
+                            .assists(participant.getAssists())
+                            .gameMode(info.getGameMode())
+                            .build();
+
                     game.setMinutes(minutes);
                     user.getGames().add(game);
-                    userRepository.save(user);
+                    user.setLastUpdate(new Timestamp(System.currentTimeMillis()).getTime());
                 }
             }
         }
+        userRepository.save(user);
     }
 
-    List<Minute> getTimeline(Platform platform, String matchId, String puuid) throws RiotApiException {
+    @SneakyThrows
+    public List<Minute> getTimeline(Platform platform, String matchId, String puuid) {
         List<Minute> minutes = new ArrayList<>();
         platform = platform.convert();
         MatchTimelineInfo info = api.getTimelineByMatchId(platform, matchId).getInfo();
@@ -109,17 +115,21 @@ public class RiotApiServiceImpl implements RiotApiService {
         for (ParticipantIdentityInfo participantIdentityInfo : info.getParticipants()) {
             id = participantIdentityInfo.getPuuid().equals(puuid) ? participantIdentityInfo.getParticipantId() : id;
         }
-        int i = 0;
+        int timer = 0;
         for (MatchFrame matchFrame : info.getFrames()) {
-            i++;
-            MatchParticipantFrame matchParticipantFrame = matchFrame.getParticipantFrames().get(id);
-            Minute minute = new Minute();
-            minute.setMinute(i);
-            minute.setTotalGold(matchParticipantFrame.getTotalGold());
-            minute.setCurrentGold(matchParticipantFrame.getCurrentGold());
-            minute.setMinionsKilled(matchParticipantFrame.getMinionsKilled());
-            minute.setJungleMinionsKilled(matchParticipantFrame.getJungleMinionsKilled());
-            minute.setPosition(matchParticipantFrame.getPosition());
+            timer++;
+            MatchParticipantFrame participant = matchFrame.getParticipantFrames().get(id);
+            Minute minute = Minute.builder()
+                    .minute(timer)
+                    .totalGold(participant.getTotalGold())
+                    .currentGold(participant.getCurrentGold())
+                    .minionsKilled(participant.getMinionsKilled())
+                    .jungleMinionsKilled(participant.getJungleMinionsKilled())
+                    .position(participant.getPosition())
+                    .teamScore(participant.getTeamScore())
+                    .level(participant.getLevel())
+                    .xp(participant.getXp())
+                    .build();
             minutes.add(minute);
         }
         return minutes;
