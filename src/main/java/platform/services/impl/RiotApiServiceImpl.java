@@ -76,7 +76,7 @@ public class RiotApiServiceImpl implements RiotApiService {
 
     @SneakyThrows
     @Override
-    public void update(Platform platform, String name) {
+    public void search(Platform platform, String name) {
         User user = getOrCreateUser(platform, name);
         Summoner summoner = getSummoner(platform, name);
         log.info("Update information for {}", summoner);

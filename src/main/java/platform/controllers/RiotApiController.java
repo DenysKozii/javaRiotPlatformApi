@@ -9,14 +9,14 @@ import platform.utils.riot.constant.Platform;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/v1/riot")
+@RequestMapping("api/v1")
 public class RiotApiController {
 
     private final RiotApiService riotApiService;
 
-    @PostMapping("update")
-    public void update(Platform platform, String name) {
-        riotApiService.update(platform, name);
+    @PostMapping
+    public void search(Platform platform, String name) {
+        riotApiService.search(platform, name);
     }
 
 }
