@@ -1,10 +1,11 @@
 package platform.services.impl;
 
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import platform.entities.ApiKey;
-import platform.repositories.ApiKeyRepository;
+import platform.entities.User;
+import platform.repositories.UserRepository;
 import platform.services.RiotApiService;
 import platform.utils.riot.api.ApiConfig;
 import platform.utils.riot.api.RiotApi;
@@ -14,48 +15,42 @@ import platform.utils.riot.constant.Platform;
 
 import java.util.List;
 
+@AllArgsConstructor
 @Service
 public class RiotApiServiceImpl implements RiotApiService {
 
-    private final ApiKeyRepository apiKeyRepository;
-    private ApiConfig config;
-    private RiotApi api;
+    @Value("${riot.api.key}")
+    private final String key = "";
+    private final ApiConfig config = new ApiConfig().setKey(key);
+    private final RiotApi api = new RiotApi(config);
+    private final UserRepository userRepository;
 
-    @Autowired
-    public RiotApiServiceImpl(ApiKeyRepository apiKeyRepository) {
-        this.apiKeyRepository = apiKeyRepository;
-        config = new ApiConfig().setKey(getApiKey());
-        api = new RiotApi(config);
-    }
-
+    @SneakyThrows
     @Override
-    public void upsertApiKey(String apiKey) {
-        apiKeyRepository.save(new ApiKey(1L, apiKey));
-        config = new ApiConfig().setKey(apiKey);
-        api = new RiotApi(config);
-    }
-
-    @Override
-    public String getApiKey() {
-        return apiKeyRepository.findById(1L).map(ApiKey::getValue).orElse("");
+    public Summoner getSummoner(Platform platform, String summonerName) {
+        return api.getSummonerByName(platform, summonerName);
     }
 
     @SneakyThrows
     @Override
-    public Summoner getSummoner(Platform platform, String username) {
-        return api.getSummonerByName(platform, username);
-    }
-
-    @SneakyThrows
-    @Override
-    public List<String> getMatchList(Platform platform, String username) {
-        return api.getMatchListByAccountId(platform.convert(), getSummoner(platform, username).getPuuid());
+    public List<String> getMatchList(Platform platform, String summonerName) {
+        User user = userRepository.findByPlatformAndName(platform, summonerName)
+                .orElseThrow(RuntimeException::new);
+        return api.getMatchListByAccountId(platform.convert(), getSummoner(platform, summonerName).getPuuid(), user.getLastUpdate());
     }
 
     @SneakyThrows
     @Override
     public Match getMatch(Platform platform, String matchId) {
         return api.getMatch(platform, matchId);
+    }
+
+    @Override
+    public void update(Platform platform, String summonerName) {
+        System.out.println("key : " + key);
+        List<String> matches = getMatchList(platform, summonerName);
+        System.out.println(matches);
+        // save new matches
     }
 
 }

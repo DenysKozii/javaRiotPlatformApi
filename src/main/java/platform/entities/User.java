@@ -2,11 +2,8 @@ package platform.entities;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.ArrayList;
-import java.util.List;
+import platform.utils.riot.constant.Platform;
 
 @Getter
 @Setter
@@ -21,18 +18,8 @@ public class User {
 
     private String name;
 
-    private String password;
+    private Platform platform;
 
-    private Integer points = 0;
-
-    @DBRef(lazy = true)
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private List<Quest> availableQuests = new ArrayList<>();
-
-    @DBRef(lazy = true)
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private List<Quest> passedQuests = new ArrayList<>();
+    private Integer lastUpdate = -1;
 
 }

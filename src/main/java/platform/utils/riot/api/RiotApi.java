@@ -1721,9 +1721,9 @@ public class RiotApi implements Cloneable {
 	 * @version 4
 	 * @see MatchList
 	 */
-	public List<String> getMatchListByAccountId(Platform platform, String accountId, Set<Integer> champion, Set<Integer> queue, Set<Integer> season)
+	public List<String> getMatchListByAccountId(Platform platform, String accountId, Set<Integer> champion, Set<Integer> queue, Set<Integer> season, int beginIndex)
 			throws RiotApiException {
-		return getMatchListByAccountId(platform, accountId, champion, queue, season, -1, -1, -1, -1);
+		return getMatchListByAccountId(platform, accountId, champion, queue, season, -1, -1, beginIndex, -1);
 	}
 
 	/**
@@ -1739,8 +1739,8 @@ public class RiotApi implements Cloneable {
 	 * @version 4
 	 * @see MatchList
 	 */
-	public List<String> getMatchListByAccountId(Platform platform, String accountId) throws RiotApiException {
-		return getMatchListByAccountId(platform, accountId, null, null, null);
+	public List<String> getMatchListByAccountId(Platform platform, String accountId, int beginIndex) throws RiotApiException {
+		return getMatchListByAccountId(platform, accountId, null, null, null, beginIndex);
 	}
 
 	/**
