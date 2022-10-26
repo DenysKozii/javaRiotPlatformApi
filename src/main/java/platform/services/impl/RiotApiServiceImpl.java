@@ -62,22 +62,19 @@ public class RiotApiServiceImpl implements RiotApiService {
         return api.getMatch(platform, matchId).getInfo();
     }
 
-    private User getOrCreateUser(Platform platform, String name) {
-        return userRepository.findByPlatformAndName(platform, name)
-                .orElseGet(() -> {
-                    User user = new User();
-                    user.setPlatform(platform);
-                    user.setName(name);
-                    user.setLastUpdate(new Timestamp(System.currentTimeMillis()).getTime());
-                    userRepository.save(user);
-                    return user;
-                });
+    private User updateUser(Platform platform, String name) {
+        userRepository.findByPlatformAndName(platform, name).ifPresent(userRepository::delete);
+        User user = new User();
+        user.setPlatform(platform);
+        user.setName(name);
+        user.setLastUpdate(new Timestamp(System.currentTimeMillis()).getTime());
+        return user;
     }
 
     @SneakyThrows
     @Override
     public void search(Platform platform, String name) {
-        User user = getOrCreateUser(platform, name);
+        User user = updateUser(platform, name);
         Summoner summoner = getSummoner(platform, name);
         log.info("Update information for {}", summoner);
         List<String> matches = getMatchList(platform, summoner);
