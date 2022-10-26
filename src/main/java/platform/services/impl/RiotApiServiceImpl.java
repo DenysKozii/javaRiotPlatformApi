@@ -92,9 +92,9 @@ public class RiotApiServiceImpl implements RiotApiService {
                             .deaths(participant.getDeaths())
                             .assists(participant.getAssists())
                             .gameMode(info.getGameMode())
+                            .minutes(minutes)
                             .build();
 
-                    game.setMinutes(minutes);
                     user.getGames().add(game);
                     user.setLastUpdate(new Timestamp(System.currentTimeMillis()).getTime());
                 }
