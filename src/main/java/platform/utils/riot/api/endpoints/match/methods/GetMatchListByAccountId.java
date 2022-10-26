@@ -56,7 +56,7 @@ public class GetMatchListByAccountId extends MatchApiMethod {
 		if (beginIndex != -1) {
 			add(new UrlParameter("beginIndex", beginIndex));
 		}
-		add(new UrlParameter("count", 20));
+		add(new UrlParameter("count", 10));
 		addApiKeyParameter();
 	}
 }

@@ -1,7 +1,7 @@
 package platform.controllers;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import platform.services.RiotApiService;
@@ -14,9 +14,9 @@ public class RiotApiController {
 
     private final RiotApiService riotApiService;
 
-    @GetMapping("update")
-    public void update(Platform platform, String summonerName) {
-        riotApiService.update(platform, summonerName);
+    @PostMapping("update")
+    public void update(Platform platform, String name) {
+        riotApiService.update(platform, name);
     }
 
 }

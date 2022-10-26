@@ -8,12 +8,12 @@ import java.util.List;
 
 public interface RiotApiService {
 
-    Summoner getSummoner(Platform platform, String summonerName);
+    Summoner getSummoner(Platform platform, String name);
 
-    List<String> getMatchList(Platform platform, String summonerName);
+    List<String> getMatchList(Platform platform, Summoner summoner);
 
     Match getMatch(Platform platform, String matchId);
 
-    void update(Platform platform, String summonerName);
+    void update(Platform platform, String name);
 
 }

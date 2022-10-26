@@ -21,6 +21,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import platform.utils.riot.api.endpoints.league.constant.LeagueQueue;
 import platform.utils.riot.api.endpoints.league.methods.GetLeagueById;
 import platform.utils.riot.api.endpoints.league.methods.GetMasterLeagueByQueue;
@@ -142,6 +144,7 @@ import platform.utils.util.RiotApiUtil;
  * @see ApiConfig
  * @see RiotApiAsync
  */
+@Service
 public class RiotApi implements Cloneable {
 
 	public static final Logger log = Logger.getLogger(RiotApi.class.getName());
@@ -167,6 +170,7 @@ public class RiotApi implements Cloneable {
 	 *            Configuration to use for this RiotApi object
 	 * @see ApiConfig
 	 */
+	@Autowired
 	public RiotApi(ApiConfig config) {
 		this.config = config;
 		log.setUseParentHandlers(false);

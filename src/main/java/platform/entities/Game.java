@@ -4,7 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import platform.utils.riot.constant.Platform;
+import platform.enums.QuestType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,18 +15,20 @@ import java.util.List;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Document("users")
-public class User {
+@Document("games")
+public class Game {
 
     @Id
     String id;
 
-    String name;
+    String championName;
 
-    Platform platform;
+    Integer kills;
 
-    Integer lastUpdate = -1;
+    Integer deaths;
 
-    List<Game> games = new ArrayList<>();
+    Integer assists;
+
+    List<Minute> minutes = new ArrayList<>();
 
 }

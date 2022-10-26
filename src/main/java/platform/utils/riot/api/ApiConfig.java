@@ -19,12 +19,14 @@ package platform.utils.riot.api;
 import java.util.Objects;
 import java.util.logging.Level;
 
+import org.springframework.stereotype.Service;
 import platform.utils.riot.api.request.ratelimit.DefaultRateLimitHandler;
 import platform.utils.riot.api.request.ratelimit.RateLimitHandler;
 
 /**
  * Configuration class to use with the {@link RiotApi}.
  */
+@Service
 public class ApiConfig implements Cloneable {
 
 	public final int DEFAULT_ASYNC_REQUEST_TIMEOUT = 10000;

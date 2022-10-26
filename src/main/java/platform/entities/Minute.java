@@ -4,7 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import platform.utils.riot.constant.Platform;
+import platform.utils.riot.api.endpoints.match.dto.MatchPosition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,18 +15,22 @@ import java.util.List;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Document("users")
-public class User {
+@Document("minutes")
+public class Minute {
 
     @Id
     String id;
 
-    String name;
+    Integer time;
 
-    Platform platform;
+    Integer minionsKilled;
 
-    Integer lastUpdate = -1;
+    Integer jungleMinionsKilled;
 
-    List<Game> games = new ArrayList<>();
+    Integer totalGold;
+
+    Integer currentGold;
+
+    MatchPosition position;
 
 }
