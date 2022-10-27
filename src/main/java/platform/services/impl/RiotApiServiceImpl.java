@@ -43,6 +43,7 @@ public class RiotApiServiceImpl implements RiotApiService {
         this.riotApiKey = riotApiKey;
     }
 
+    // TODO skip api request if puuid is known
     @SneakyThrows
     @Override
     public Summoner getSummoner(Platform platform, String name) {
@@ -62,13 +63,14 @@ public class RiotApiServiceImpl implements RiotApiService {
         return api.getMatch(platform, matchId).getInfo();
     }
 
+    // TODO read puuid
     private User updateUser(Platform platform, String name) {
         userRepository.findByPlatformAndName(platform, name).ifPresent(userRepository::delete);
-        User user = new User();
-        user.setPlatform(platform);
-        user.setName(name);
-        user.setLastUpdate(new Timestamp(System.currentTimeMillis()).getTime());
-        return user;
+        return User.builder()
+                .name(name)
+                .platform(platform)
+                .lastUpdate(new Timestamp(System.currentTimeMillis()).getTime())
+                .build();
     }
 
     @SneakyThrows

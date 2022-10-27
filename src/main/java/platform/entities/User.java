@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -21,6 +22,8 @@ public class User {
 
     @Id
     String id;
+
+    String puuid;
 
     String name;
 
